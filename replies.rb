@@ -70,4 +70,25 @@ class Reply
         return nil if data.empty?
         data.map{|datum| Reply.new(datum)}
     end
+
+    def save
+        if id.nil?
+            QuestionsDatabase.instance.execute(<<-SQL,body,author_id,subject_id,parent_id)
+                INSERT INTO
+                    replies(body,author_id,subject_id,parent_id)
+                VALUES
+                    (?,?,?,?)
+            SQL
+            @id = QuestionsDatabase.instance.last_insert_row_id
+        else  
+            QuestionsDatabase.instance.execute(<<-SQL,body,author_id,subject_id,parent_id,id)
+            UPDATE
+                replies
+            SET
+                body = ?,author_id = ?,subject_id = ?, parent_id = ?
+            WHERE 
+                id = ?
+            SQL
+        end
+    end
 end

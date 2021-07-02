@@ -2,7 +2,7 @@ require_relative 'questionsdb.rb'
 require_relative 'questions'
 
 class User
-    attr_accessor :id,:fname,:lanme
+    attr_accessor :id,:fname,:lname
 
     def self.find_by_id(id)
         data = QuestionsDatabase.instance.execute(<<-SQL,id)
@@ -75,5 +75,26 @@ class User
         SQL
         return nil if data.empty?
         data.first['average_karma']
+    end
+
+    def save
+        if id.nil?
+            QuestionsDatabase.instance.execute(<<-SQL,fname,lname)
+                INSERT INTO
+                    users(fname,lname)
+                VALUES
+                    (?,?)
+            SQL
+            @id = QuestionsDatabase.instance.last_insert_row_id
+        else  
+            QuestionsDatabase.instance.execute(<<-SQL,fname,lname,id)
+            UPDATE
+                users
+            SET
+                fname = ? ,lname = ?
+            WHERE 
+                id = ?
+            SQL
+        end
     end
 end
