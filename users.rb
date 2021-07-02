@@ -63,7 +63,7 @@ class User
                         author_id,COUNT(user_id) AS number_of_likes
                     FROM
                         questions
-                        JOIN
+                        LEFT JOIN
                         question_likes
                         ON
                         id = question_id
