@@ -89,7 +89,16 @@ VALUES
     FROM 
         users 
     WHERE 
-        fname = 'Hermione'))
+        fname = 'Hermione')),
+
+    ('Does anyone know who Regulus is?','title',
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Harry'
+    ))
 ;
 
 INSERT INTO
@@ -245,7 +254,120 @@ VALUES
         questions
     WHERE
         title = 'Is Dobby Free?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Harry'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Is Dobby Free?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Ron'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Is Dobby Free?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Hermione'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Hogwarts History')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Harry'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Am i a wizzard,already?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Ron'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Am i a wizzard,already?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Dobby'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Am i a wizzard,already?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Hermione'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Am i a wizzard,already?')
     )
+    
 ;
 
 INSERT INTO 
@@ -282,5 +404,71 @@ VALUES
         questions
     WHERE
         title = 'Am i a wizzard,already?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Rubeus'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Am i a wizzard,already?')
+    ),
+
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Dobby'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Hogwarts History')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Hermione'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Is Dobby Free?')
+    ),
+
+    (
+    (SELECT
+        id
+    FROM
+        users
+    WHERE
+        fname = 'Harry'),
+    
+    (SELECT
+        id
+    FROM
+        questions
+    WHERE
+        title = 'Is Dobby Free?')
     )
+
 ;
