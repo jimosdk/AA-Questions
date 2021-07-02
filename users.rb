@@ -1,4 +1,5 @@
 require_relative 'questionsdb.rb'
+require_relative 'questions'
 
 class User
     attr_accessor :id,:fname,:lanme
@@ -11,6 +12,22 @@ class User
             WHERE
                 id = ?
         SQL
+        return nil if data.empty?
+        User.new(data.first)
+    end
+
+    def self.find_by_name(fname,lname = nil)
+        data = QuestionsDatabase.instance.execute(<<-SQL,fname: fname,lname: lname)
+            SELECT * 
+            FROM
+                users
+            WHERE
+                fname = :fname AND
+                (lname = :lname OR
+                (:lname IS NULL AND 
+                lname IS NULL))
+        SQL
+        return nil if data.empty?
         User.new(data.first)
     end
 
@@ -20,4 +37,11 @@ class User
         @lname = options['lname']
     end
 
+    def authored_questions
+        Question.find_by_author_id(id)
+    end
+
+    def authored_replies
+        Reply.find_by_author_id(id)
+    end
 end
