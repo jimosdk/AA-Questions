@@ -48,4 +48,32 @@ class User
     def followed_questions 
         QuestionFollow.followed_questions_for_user_id(id)
     end
+
+    def liked_questions  
+        QuestionLike.liked_questions_for_user_id(id)
+    end
+
+    def average_karma
+        data = QuestionsDatabase.instance.execute(<<-SQL,id: id)
+            SELECT
+                AVG(number_of_likes) AS average_karma
+            FROM
+                (
+                    SELECT 
+                        author_id,COUNT(user_id) AS number_of_likes
+                    FROM
+                        questions
+                        JOIN
+                        question_likes
+                        ON
+                        id = question_id
+                    WHERE
+                        author_id = :id
+                    GROUP BY id
+                ) AS likes_per_question 
+            GROUP BY author_id
+        SQL
+        return nil if data.empty?
+        data.first['average_karma']
+    end
 end
