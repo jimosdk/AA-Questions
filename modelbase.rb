@@ -25,8 +25,23 @@ class ModelB
         data.map{|datum| self.new(datum)}
     end
 
+    def self.where(options)
+        t = self.to_s.underscore.tableize
+        keys = options.keys
+        v = options.values
+        interp = keys.map{|key| "#{key} = ?"}.join(' AND ')
+        data = QuestionsDatabase.instance.execute(<<-SQL,*v)
+            SELECT *
+            FROM
+                #{t}
+            WHERE
+                #{interp}
+        SQL
+        return nil if data.empty?
+        data.map{|datum| self.new(datum)}
+    end
+
     def save
-        #debugger
         t = self.class.to_s.underscore.tableize
         v = self.instance_variables
         v.delete(:@id)
