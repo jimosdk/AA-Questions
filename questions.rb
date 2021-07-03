@@ -1,20 +1,8 @@
 require_relative 'users'
+require_relative 'modelbase'
 
-
-class Question  
+class Question < ModelB
     attr_accessor :id ,:title,:body,:author_id
-
-    def self.find_by_id(id)
-        data = QuestionsDatabase.instance.execute(<<-SQL,id)
-            SELECT *
-            FROM 
-                questions
-            WHERE
-                id = ?
-        SQL
-        return nil if data.empty?
-        Question.new(data.first)
-    end
 
     def self.find_by_author_id(author_id)
         data = QuestionsDatabase.instance.execute(<<-SQL,author_id)
@@ -62,26 +50,4 @@ class Question
     def num_likes  
         QuestionLike.num_likes_for_question_id(id)
     end
-
-    def save
-        if id.nil?
-            QuestionsDatabase.instance.execute(<<-SQL,title,body,author_id)
-                INSERT INTO
-                    questions(title,body,author_id)
-                VALUES
-                    (?,?,?)
-            SQL
-            @id = QuestionsDatabase.instance.last_insert_row_id
-        else  
-            QuestionsDatabase.instance.execute(<<-SQL,title,body,author_id,id)
-            UPDATE
-                questions
-            SET
-                title = ? ,body = ?,author_id = ?
-            WHERE 
-                id = ?
-            SQL
-        end
-    end
-
 end

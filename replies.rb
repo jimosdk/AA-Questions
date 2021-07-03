@@ -1,19 +1,8 @@
 require_relative 'questions'
+require_relative 'modelbase'
 
-class Reply
+class Reply < ModelB
     attr_accessor :id,:body,:author_id,:subject_id,:parent_id
-
-    def self.find_by_id(id)
-        data = QuestionsDatabase.instance.execute(<<-SQL,id)
-            SELECT *
-            FROM
-                replies
-            WHERE
-                id = ?
-        SQL
-        return nil if data.empty?
-        Reply.new(data.first)
-    end
 
     def self.find_by_author_id(author_id)
         data = QuestionsDatabase.instance.execute(<<-SQL,author_id)
@@ -69,26 +58,5 @@ class Reply
         SQL
         return nil if data.empty?
         data.map{|datum| Reply.new(datum)}
-    end
-
-    def save
-        if id.nil?
-            QuestionsDatabase.instance.execute(<<-SQL,body,author_id,subject_id,parent_id)
-                INSERT INTO
-                    replies(body,author_id,subject_id,parent_id)
-                VALUES
-                    (?,?,?,?)
-            SQL
-            @id = QuestionsDatabase.instance.last_insert_row_id
-        else  
-            QuestionsDatabase.instance.execute(<<-SQL,body,author_id,subject_id,parent_id,id)
-            UPDATE
-                replies
-            SET
-                body = ?,author_id = ?,subject_id = ?, parent_id = ?
-            WHERE 
-                id = ?
-            SQL
-        end
     end
 end
