@@ -27,18 +27,30 @@ class ModelB
 
     def self.where(options)
         t = self.to_s.underscore.tableize
-        keys = options.keys
-        v = options.values
-        interp = keys.map{|key| "#{key} = ?"}.join(' AND ')
-        data = QuestionsDatabase.instance.execute(<<-SQL,*v)
-            SELECT *
-            FROM
-                #{t}
-            WHERE
-                #{interp}
-        SQL
-        return nil if data.empty?
-        data.map{|datum| self.new(datum)}
+        if options.is_a?(Hash)
+            keys = options.keys
+            v = options.values
+            interp = keys.map{|key| "#{key} = ?"}.join(' AND ')
+            data = QuestionsDatabase.instance.execute(<<-SQL,*v)
+                SELECT *
+                FROM
+                    #{t}
+                WHERE
+                    #{interp}
+            SQL
+            return nil if data.empty?
+            data.map{|datum| self.new(datum)}
+        elsif options.is_a?(String)
+            data = QuestionsDatabase.instance.execute(<<-SQL)
+                SELECT *
+                FROM
+                    #{t}
+                WHERE
+                    #{options}
+            SQL
+            return nil if data.empty?
+            data.map{|datum| self.new(datum)}
+        end
     end
 
     def save
