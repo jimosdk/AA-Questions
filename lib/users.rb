@@ -1,6 +1,10 @@
 require_relative 'questionsdb.rb'
-require_relative 'questions'
 require_relative 'modelbase'
+require_relative 'question_likes'
+require_relative 'question_follows'
+require_relative 'questions'
+require_relative 'replies'
+
 
 class User < ModelB
     attr_accessor :id,:fname,:lname

@@ -1,8 +1,6 @@
 require 'active_support/inflector'
 require_relative 'questionsdb'
-require_relative 'questions'
-require_relative 'users'
-require 'byebug'
+
 class ModelB
 
     def self.find_by_id(id)

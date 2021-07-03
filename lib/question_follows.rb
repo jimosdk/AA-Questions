@@ -1,4 +1,6 @@
+require_relative 'questionsdb.rb'
 require_relative 'questions'
+require_relative 'users'
 
 class QuestionFollow
     attr_accessor :question_id,:user_id

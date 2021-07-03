@@ -1,5 +1,9 @@
-require_relative 'questions'
+require_relative 'questionsdb.rb'
 require_relative 'modelbase'
+require_relative 'question_likes'
+require_relative 'question_follows'
+require_relative 'questions'
+require_relative 'users'
 
 class Reply < ModelB
     attr_accessor :id,:body,:author_id,:subject_id,:parent_id
